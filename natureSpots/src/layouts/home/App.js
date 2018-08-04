@@ -21,14 +21,17 @@ const instructions = Platform.select({
 });
 
 class App extends Component{
+  onPress(){
+    this.props.navigation.navigate('Tela_map');
+  }
   render() {
     return (
       <View style={styles.container}>
       <Button
           title="Go to Details"
-          onPress={() => this.props.navigation.navigate('Tela_map')}
+          onPress={() => this.onPress()}
         />
-        <My_list/>
+        <My_list  onPress={()=>this.onPress()}/>
         <My_map/>
       </View>
     );

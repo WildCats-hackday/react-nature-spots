@@ -6,10 +6,6 @@ import { createStackNavigator } from 'react-navigation';
 
 
 export default class App extends Component {
-  onPress(item){
-    alert(item);
-  }
-
   render() {
 
     return (
@@ -21,7 +17,7 @@ export default class App extends Component {
           ]}
           renderItem={
             ({item}) => 
-            <TouchableOpacity onPress={() => this.onPress(item.course)}>  
+            <TouchableOpacity onPress={()=>{this.props.onPress()}}>  
               <View style={styles.itemView}>
                 <Image source={{ uri: item.photo}} style={styles.photo}/>
                 <Text style={styles.itemList}>{item.name}</Text>
