@@ -7,9 +7,11 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, Button} from 'react-native';
 import My_list from '../../components/lista/list';
 import My_map from '../../components/gmap/map'
+import Tela_map from '../tela_maps/tela_maps'
+import { createStackNavigator } from 'react-navigation';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -18,10 +20,14 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-export default class App extends Component{
+class App extends Component{
   render() {
     return (
       <View style={styles.container}>
+      <Button
+          title="Go to Details"
+          onPress={() => this.props.navigation.navigate('Tela_map')}
+        />
         <My_list/>
         <My_map/>
       </View>
@@ -47,3 +53,5 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+export default App

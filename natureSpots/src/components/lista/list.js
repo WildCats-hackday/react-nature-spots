@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, FlatList, Image, Alert, TouchableOpacity } from 'react-native';
+import {Button, StyleSheet, Text, View, FlatList, Image, Alert, TouchableOpacity } from 'react-native';
+import Maper from '../../layouts/tela_maps/tela_maps';
+import HomeScreen from '../../layouts/home/App';
+import { createStackNavigator } from 'react-navigation';
 
 
 export default class App extends Component {
   onPress(item){
-    Alert.alert(item);
+    alert(item);
   }
 
   render() {
+
     return (
       <View style={styles.container}>
         <FlatList
