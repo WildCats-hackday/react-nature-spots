@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View, FlatList, Image, Alert, TouchableOpacity } from 'react-native';
-import Maper from '../../layouts/tela_maps/tela_maps';
+import Detail from '../../layouts/detail/detail';
 import HomeScreen from '../../layouts/home/App';
-import { createStackNavigator } from 'react-navigation';
-
+import { StackNavigator, createStackNavigator } from 'react-navigation';
 
 export default class App extends Component {
   constructor(props){
     super(props);
     this.state ={ isLoading: true}
+    this.go_detail = this.go_detail.bind(this);
   }
-
+  go_detail = (item) => {
+    const {navigate} = this.props.navigation
+      navigate('Detail',{id:1})
+  }
   componentDidMount(){
     return fetch('https://nature-spots.herokuapp.com/places.json')
       .then((response) => response.json())
@@ -28,8 +31,13 @@ export default class App extends Component {
         console.error(error);
       });
   }
-  render() {
 
+  goDetail = (item) => {
+    this.props.navigation.navigate(Detail,{id: item.id})
+  }
+
+  render() {
+    
     if(this.state.isLoading){
       return(
         <View style={{flex: 1, padding: 20}}>
@@ -40,11 +48,11 @@ export default class App extends Component {
 
     return (
       <View style={styles.container}>
-        <FlatList
+        <FlatList 
           data={this.state.dataSource}
           renderItem={
             ({item}) => 
-            <TouchableOpacity onPress={()=>{this.props.onPress()}}>  
+            <TouchableOpacity onPress={()=> this.goDetail(item)}>  
               <View style={styles.itemView}>
                 <Image source={{ uri: item.photo}} style={styles.photo}/>
                 <Text style={styles.itemList}>{item.name}</Text>
