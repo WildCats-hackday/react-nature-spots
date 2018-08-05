@@ -1,61 +1,124 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, { Component } from 'react';
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button} from 'react-native';
-import My_list from '../../components/lista/list';
-import My_map from '../../components/gmap/map'
-import Tela_map from '../tela_maps/tela_maps'
-import { createStackNavigator } from 'react-navigation';
+import { StyleSheet, Text, View, ListView} from 'react-native';
 
+import { StackNavigator } from 'react-navigation';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+class FirstActivity extends Component {
 
-class App extends Component{
-  onPress(){
-    this.props.navigation.navigate('Tela_map');
-  }
-  render() {
-    return (
-      <View style={styles.container}>
-      <Button
-          title="Go to Details"
-          onPress={() => this.onPress()}
+  constructor(props) {
+    
+       super(props);
+    
+       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+       
+       this.state = {
+    
+         dataSource: ds.cloneWithRows([
+
+               'Item 1',
+               'Item 2',
+               'Item 3',
+           ]),
+       
+       };
+    
+    
+     }
+
+     ListViewItemSeparatorLine = () => {
+      return (
+        <View
+          style={{
+            height: .5,
+            width: "100%",
+            backgroundColor: "#000",
+          }}
         />
-        <My_list  onPress={()=>this.onPress()}/>
-        <My_map/>
-      </View>
-    );
+      );
+    }
+
+    OpenSecondActivity (rowData)
+    {
+      
+       this.props.navigation.navigate('Second', { ListViewClickItemHolder: rowData });
+       
+    }
+
+
+  render()
+  {
+     return(
+        <View style = { styles.MainContainer }>
+
+<ListView
+
+           dataSource={this.state.dataSource}
+
+           renderSeparator= {this.ListViewItemSeparatorLine}
+
+           renderRow={
+                       (rowData) => <Text style={styles.rowViewContainer} onPress={this.OpenSecondActivity.bind(this, rowData)}>{rowData}</Text>
+                     }
+
+         />
+         
+        </View>
+     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+class SecondActivity extends Component
+{
+  static navigationOptions =
+  {
+     title: 'SecondActivity',
+  };
+
+  render()
+  {
+     return(
+        <View style = { styles.MainContainer }>
+
+           <Text style = { styles.TextStyle }> { this.props.navigation.state.params.ListViewClickItemHolder } </Text>
+
+        </View>
+     );
+  }
+}
+
+export default Project = StackNavigator(
+{
+  First: { screen: FirstActivity },
+  
+  Second: { screen: SecondActivity }
 });
 
-export default App
+const styles = StyleSheet.create(
+{
+  MainContainer:
+  {
+     justifyContent: 'center',
+     flex:1,
+     margin: 10
+   
+  },
+
+  TextStyle:
+  {
+     fontSize: 23,
+     textAlign: 'center',
+     color: '#000',
+  },
+
+  rowViewContainer: 
+  {
+ 
+    fontSize: 18,
+    paddingRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+ 
+  }
+
+});

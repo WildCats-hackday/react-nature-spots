@@ -28,6 +28,11 @@ export default class App extends Component {
         console.error(error);
       });
   }
+
+  goDetail = (item) => {
+    this.props.navigation.navigate('Detail', {id: item.id})
+  }
+
   render() {
 
     if(this.state.isLoading){
@@ -44,7 +49,7 @@ export default class App extends Component {
           data={this.state.dataSource}
           renderItem={
             ({item}) => 
-            <TouchableOpacity onPress={()=>{this.props.onPress()}}>  
+            <TouchableOpacity onPress={()=>{this.goDetail(item)}}>  
               <View style={styles.itemView}>
                 <Image source={{ uri: item.photo}} style={styles.photo}/>
                 <Text style={styles.itemList}>{item.name}</Text>

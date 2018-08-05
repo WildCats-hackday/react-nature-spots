@@ -3,19 +3,16 @@ import React, { Component } from 'react';
 import { StyleSheet, Platform, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-export default class User_detail extends Component{
+export default class Detail extends Component{
+    constructor(props){
+        super(props)
+    }
 
     render(){
+        const { navigation } = this.props;
+        const { item } = navigation.getParams('id', 'NO-ID')
         return(
             <View/>
         )
     }
-}
-
-User.propTypes =
-{
-  name: PropTypes.string,
-  FontSize: PropTypes.number,
-  FontColor: PropTypes.string,
-  
 }
