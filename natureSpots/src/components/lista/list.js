@@ -1,20 +1,47 @@
 import React, {Component} from 'react';
-import {Button, StyleSheet, Text, View, FlatList, Image, Alert, TouchableOpacity } from 'react-native';
+import {ActivityIndicator, StyleSheet, Text, View, FlatList, Image, Alert, TouchableOpacity } from 'react-native';
 import Maper from '../../layouts/tela_maps/tela_maps';
 import HomeScreen from '../../layouts/home/App';
 import { createStackNavigator } from 'react-navigation';
 
 
 export default class App extends Component {
+  constructor(props){
+    super(props);
+    this.state ={ isLoading: true}
+  }
+
+  componentDidMount(){
+    return fetch('https://nature-spots.herokuapp.com/places.json')
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson,
+        }, function(){
+
+        });
+
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+  }
   render() {
+
+    if(this.state.isLoading){
+      return(
+        <View style={{flex: 1, padding: 20}}>
+          <ActivityIndicator/>
+        </View>
+      )
+    }
 
     return (
       <View style={styles.container}>
         <FlatList
-          data={[
-            {id: 1, name: 'Vinicius Cardoso', course: 'Engenharia de Software', photo: 'https://cdn1.iconfinder.com/data/icons/occupations-3/100/21-512.png', bio: 'Professor de Engenharia de Software'},
-            {id: 2, name: 'Carla Silva', course: 'Sistemas de Informação', photo: 'https://cdn3.iconfinder.com/data/icons/education-5-2/256/Teacher-512.png', bio: 'Professor de Engenharia de Software'}
-          ]}
+          data={this.state.dataSource}
           renderItem={
             ({item}) => 
             <TouchableOpacity onPress={()=>{this.props.onPress()}}>  
